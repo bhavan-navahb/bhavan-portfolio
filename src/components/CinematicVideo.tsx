@@ -26,11 +26,34 @@ export default function CinematicVideo() {
       if (!video) return;
       readyRef.current = true;
       durationRef.current = video.duration || 0;
-      video.pause();
-      try {
-        video.currentTime = 0;
-      } catch {
-        /* ignore seek errors on unready buffers */
+      // Chrome (and others) will not paint a single frame of a <video> that has
+      // never played, even after seeking currentTime. Do one silent play -> pause
+      // so the first frame actually renders, then hand off to manual scrubbing.
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.then === "function") {
+        playPromise
+          .then(() => {
+            video.pause();
+            try {
+              video.currentTime = 0;
+            } catch {
+              /* ignore seek errors on unready buffers */
+            }
+          })
+          .catch(() => {
+            try {
+              video.currentTime = 0;
+            } catch {
+              /* ignore seek errors on unready buffers */
+            }
+          });
+      } else {
+        video.pause();
+        try {
+          video.currentTime = 0;
+        } catch {
+          /* ignore seek errors on unready buffers */
+        }
       }
     }
     video.addEventListener("loadedmetadata", onLoaded);
@@ -112,7 +135,7 @@ export default function CinematicVideo() {
       >
         <video
           ref={videoRef}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover [filter:brightness(1.1)_contrast(1.05)_saturate(1.1)]"
           src="/video/portfolio-background.mp4"
           playsInline
           muted

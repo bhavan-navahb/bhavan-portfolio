@@ -11,8 +11,9 @@ export default function Hero() {
       {/* Watermark */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -bottom-10 left-0 select-none font-display text-[26vw] font-bold uppercase leading-none tracking-tight"
+        className="pointer-events-none absolute -bottom-10 left-0 select-none whitespace-nowrap font-display font-bold uppercase leading-none tracking-tight"
         style={{
+          fontSize: "clamp(6rem, 22vw, 20rem)",
           WebkitTextStroke: "2px rgba(196, 0, 36, 0.35)",
           color: "transparent",
           textShadow: "0 0 50px rgba(196, 0, 36, 0.18)",
@@ -24,11 +25,17 @@ export default function Hero() {
       <div className="container-max relative z-10 w-full px-6 md:px-16">
         <div className="mono-chip inline-block">{profile.eyebrow}</div>
 
-        <h1 className="mt-6 font-display uppercase leading-[0.95]" style={{ maxWidth: "13ch" }}>
-          <span className="block text-[12vw] font-semibold text-white md:text-[6.5vw]">
+        <h1 className="mt-6 max-w-full font-display uppercase leading-[0.95] md:max-w-[13ch]">
+          <span
+            className="block font-semibold text-white"
+            style={{ fontSize: "clamp(2.75rem, 8vw, 6rem)" }}
+          >
             Building Ideas
           </span>
-          <span className="text-gradient-red block text-[12vw] font-semibold md:text-[6.5vw]">
+          <span
+            className="text-gradient-red block font-semibold"
+            style={{ fontSize: "clamp(2.75rem, 8vw, 6rem)" }}
+          >
             Into Experiences
             <span style={{ color: "#e0002a", textShadow: "0 0 24px rgba(224,0,42,0.8)" }}>.</span>
           </span>
